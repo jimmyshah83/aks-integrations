@@ -1,0 +1,24 @@
+server:
+  port: 8761
+
+spring:
+  data:
+    redis:
+      host: localhost
+      port: 6379
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: cloud
+  data:
+    redis:
+      host: redis-demo.redis.cache.windows.net
+      port: 6380
+      password: GZ0I4f1ILFONZQuYXJRGChCsjet8Qr7aXAzCaFpwFPc=
+      ssl: true
+#      cluster:
+#        nodes: x,y,z
+#        max-redirects: 2

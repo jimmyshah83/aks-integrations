@@ -1,0 +1,42 @@
+plugins {
+	id 'java'
+	id 'io.spring.dependency-management' version '1.1.0'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '17'
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+	implementation 'com.azure.spring:spring-cloud-azure-starter-data-cosmos'
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'io.projectreactor:reactor-test'
+	testImplementation 'com.squareup.okhttp3:mockwebserver:4.9.1'
+	testImplementation 'com.squareup.okhttp3:okhttp:4.9.1'
+}
+
+dependencyManagement {
+	dependencies {
+		imports {
+			mavenBom "com.azure.spring:spring-cloud-azure-dependencies:4.6.0"
+			mavenBom "org.springframework.boot:spring-boot-dependencies:2.7.1"
+		}
+	}
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
