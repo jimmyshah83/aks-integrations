@@ -1,0 +1,3 @@
+rootProject.name = 'msft-learnings'
+include 'spring-data-reactive-redis'
+include 'spring-reactive-cosmos'
