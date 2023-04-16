@@ -7,7 +7,7 @@ spring:
       cosmos:
         database: coffee
         endpoint: https://reactive-spring-demo.documents.azure.com:443/
-        key: xxxxxxxxxxxxxxxxx
+        key: YpqUkmYCitKjqUAqVAVTluOt7hDDUBUcLyYEHHNuM10WyQ2usIjWdkpIlcdiM1FWXsGxq1IwPS1XACDbEq4yKw==
         populate-query-metrics: true
 
 redis:
