@@ -2,3 +2,5 @@
 .DS_Store
 /spring-reactive-cosmos/.gradle/
 /spring-reactive-cosmos/build/
+/spring-data-reactive-redis/.gradle/
+/spring-data-reactive-redis/build/
