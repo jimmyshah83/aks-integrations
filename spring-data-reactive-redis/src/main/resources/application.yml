@@ -17,7 +17,7 @@ spring:
     redis:
       host: redis-demo.redis.cache.windows.net
       port: 6380
-      password: GZ0I4f1ILFONZQuYXJRGChCsjet8Qr7aXAzCaFpwFPc=
+      password: 
       ssl: true
 #      cluster:
 #        nodes: x,y,z

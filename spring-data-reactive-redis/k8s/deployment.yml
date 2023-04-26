@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spring-data-reactive-redis
+  labels:
+    app: redis
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: redis
+  template:
+    metadata:
+      labels:
+        app: redis
+    spec:
+      containers:
+        - name: spring-data-reactive-redis
+          image: acrintegrations01.azurecr.io/aks/spring-data-reactive-redis:latest
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: cloud
+          ports:
+            - containerPort: 8761
