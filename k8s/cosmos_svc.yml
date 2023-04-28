@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: cosmos-svc
+  labels:
+    app: cosmos
+spec:
+  ports:
+    - port: 8760
+      targetPort: 8760
+      protocol: TCP
+  selector:
+    app: cosmos

@@ -22,4 +22,9 @@ az aks create
 docker tag mcr.microsoft.com/oss/nginx/nginx:1.15.5-alpine myregistry.azurecr.io/samples/nginx
 docker push myregistry.azurecr.io/samples/nginx
 ```
-- Deploy to AKS using deployment.yaml
+- Deploy to AKS using yaml / helm
+
+### Expose traffic with K8s community Ingress on AKS
+https://learn.microsoft.com/en-us/azure/aks/ingress-tls?tabs=azure-cli
+
+### Secure your cluster with Istio

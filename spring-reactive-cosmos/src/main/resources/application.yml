@@ -2,15 +2,30 @@ server:
   port: 8760
 
 spring:
-  profiles:
-    active: cloud
+  cloud:
+    azure:
+      cosmos:
+        database: coffee
+        endpoint:
+        key:
+        populate-query-metrics: false
+
+redis:
+  host: http://localhost:8761
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: cloud
   cloud:
     azure:
       cosmos:
         database: coffee
         endpoint: https://reactive-spring-demo.documents.azure.com:443/
-        key:
+        key: 
         populate-query-metrics: true
 
 redis:
-  host: http://localhost:8761
+  host: http://redis-svc.default.svc.cluster.local:8761
