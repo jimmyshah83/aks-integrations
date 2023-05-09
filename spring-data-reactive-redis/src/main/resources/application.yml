@@ -15,10 +15,12 @@ spring:
       on-profile: cloud
   data:
     redis:
-      host: redis-demo.redis.cache.windows.net
+      host: redis-aks-backend-001.redis.cache.windows.net
       port: 6380
       password: 
       ssl: true
+      abort-on-connect-fail: false
 #      cluster:
 #        nodes: x,y,z
 #        max-redirects: 2
+

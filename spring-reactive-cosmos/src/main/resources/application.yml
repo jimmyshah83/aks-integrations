@@ -23,9 +23,9 @@ spring:
     azure:
       cosmos:
         database: coffee
-        endpoint: https://reactive-spring-demo.documents.azure.com:443/
-        key: 
+        endpoint: https://nosql-aks-backend-001.documents.azure.com:443/
+        key:
         populate-query-metrics: true
-
 redis:
-  host: http://redis-svc.default.svc.cluster.local:8761
+#  host: http://redis-svc.aks-demo.svc.cluster.local:8761
+  host: http://redis-svc:8761

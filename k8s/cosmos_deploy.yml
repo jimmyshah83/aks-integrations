@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: spring-reactive-cosmos
-          image: acrintegrations01.azurecr.io/aks/spring-reactive-cosmos:latest
+          image: aksintegrations01.azurecr.io/spring-reactive-cosmos:0.0.2-SNAPSHOT
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: cloud

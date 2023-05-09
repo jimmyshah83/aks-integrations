@@ -23,8 +23,19 @@ docker tag mcr.microsoft.com/oss/nginx/nginx:1.15.5-alpine myregistry.azurecr.io
 docker push myregistry.azurecr.io/samples/nginx
 ```
 - Deploy to AKS using yaml / helm
+- Expose the LB to a DNS (Private)
 
 ### Expose traffic with K8s community Ingress on AKS
-https://learn.microsoft.com/en-us/azure/aks/ingress-tls?tabs=azure-cli
+https://github.com/nginxinc/kubernetes-ingress/tree/v3.1.0/deployments/helm-chart
 
-### Secure your cluster with Istio
+Use an internal Load Balancer with a static IP address
+```agsl
+helm install nginx-ingress nginx-stable/nginx-ingress -f nginx-ingress.yaml -n nginx-ingress
+```
+![img.png](img.png)
+
+### Expose APis with API management and AKS over mTLS
+1. External mode
+2. Internal mode with Application Gateway
+
+### Secure k8s East-West traffic with Istio (Service Mesh)
