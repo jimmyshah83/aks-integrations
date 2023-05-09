@@ -1,18 +1,23 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: coffee-ingress
+  name: coffee
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
+    ingress.kubernetes.io/ssl-redirect: "false"
 spec:
   ingressClassName: nginx
+#  tls:
+#    - hosts:
+#        - cafe.example.com
+#      secretName: cafe-secret
   rules:
-    - http:
+    - host: aks.jshah.info
+      http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: redis-svc
+                name: cosmos-svc
                 port:
-                  number: 8761
+                  number: 8760

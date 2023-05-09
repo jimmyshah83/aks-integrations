@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: spring-data-reactive-redis
-          image: aksintegrations01.azurecr.io/spring-data-reactive-redis:latest
+          image: aksintegrations01.azurecr.io/spring-data-reactive-redis:0.0.3-SNAPSHOT
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: cloud
