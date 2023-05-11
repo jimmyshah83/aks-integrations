@@ -34,8 +34,9 @@ helm install nginx-ingress nginx-stable/nginx-ingress -f nginx-ingress.yaml -n n
 ```
 ![img.png](img.png)
 
+### Secure k8s East-West traffic with Istio (Service Mesh)
+https://docs.microsoft.com/en-us/azure/aks/servicemesh-istio-install?pivots=client-operating-system-linux
+
 ### Expose APis with API management and AKS over mTLS
 1. External mode
 2. Internal mode with Application Gateway
-
-### Secure k8s East-West traffic with Istio (Service Mesh)
