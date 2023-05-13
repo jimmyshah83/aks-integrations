@@ -6,7 +6,7 @@ terraform {
     }
   }
 
-# Needs to be pre-configured in Azure either manually or via another Terraform script
+  # Needs to be pre-configured in Azure either manually or via another Terraform script
   backend "azurerm" {
     resource_group_name  = "rg-tf-github-actions-state"
     storage_account_name = "tfgithubactions"
