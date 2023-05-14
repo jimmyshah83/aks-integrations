@@ -9,7 +9,7 @@ terraform {
   # Needs to be pre-configured in Azure either manually or via another Terraform script
   backend "azurerm" {
     resource_group_name  = "rg-tf-github-actions-state"
-    storage_account_name = "tfgithubactions"
+    storage_account_name = "tfgithubactions01"
     container_name       = "tfstate"
     key                  = "terraform.tfstate"
     use_oidc             = true
@@ -19,14 +19,15 @@ terraform {
 provider "azurerm" {
   features {}
   use_oidc = true
+  skip_provider_registration = "true"
 }
 
 locals {
-  resource_group_name = "rg-cc-redis-demo-01"
+  resource_group_name = "rg-cc-gh-demo"
   location            = "canadacentral"
 }
 
-resource "azurerm_resource_group" "demo-rg" {
+resource "azurerm_resource_group" "rg-cc-gh-demo" {
   name     = local.resource_group_name
   location = local.location
 }

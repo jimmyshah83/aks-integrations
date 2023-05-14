@@ -5,3 +5,4 @@
 /spring-data-reactive-redis/.gradle/
 /spring-data-reactive-redis/build/
 /.terraform/
+/.terraform.lock.hcl
