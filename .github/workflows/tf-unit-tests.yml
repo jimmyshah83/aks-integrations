@@ -41,7 +41,7 @@ jobs:
 
       # Upload results to GitHub Advanced Security
       - name: Upload SARIF file
-        if: success() || failure()
+        if: failure()
         uses: github/codeql-action/upload-sarif@v2
         with:
           sarif_file: results.sarif
