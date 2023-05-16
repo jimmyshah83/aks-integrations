@@ -1,45 +1,69 @@
-terraform {
-  required_providers {
-    azurerm = {
-      source  = "hashicorp/azurerm"
-      version = ">= 3.7.0"
-    }
+# Generate random resource group name
+resource "random_pet" "rg_name" {
+  prefix = var.resource_group_name_prefix
+}
+
+resource "azurerm_resource_group" "rg_cc_gh_demo" {
+  location = var.location
+  name     = random_pet.rg_name.id
+}
+
+resource "random_id" "log_analytics_workspace_name_suffix" {
+  byte_length = 8
+}
+
+resource "azurerm_kubernetes_cluster" "aks_gh_demo" {
+  location            = azurerm_resource_group.rg_cc_gh_demo.location
+  name                = var.cluster_name
+  resource_group_name = azurerm_resource_group.rg_cc_gh_demo.name
+  dns_prefix          = var.dns_prefix
+  tags = {
+    Environment = "Production"
   }
 
-  # Needs to be pre-configured in Azure either manually or via another Terraform script
-  backend "azurerm" {
-    resource_group_name  = "rg-tf-github-actions-state"
-    storage_account_name = "tfgithubactions"
-    container_name       = "tfstate"
-    key                  = "terraform.tfstate"
-    use_oidc             = true
+  default_node_pool {
+    name       = "agentpool"
+    vm_size    = "Standard_D2_v2"
+    node_count = var.agent_count
+  }
+
+  identity {
+    type = "SystemAssigned"
+  }
+
+  network_profile {
+    network_plugin    = "kubenet"
+    load_balancer_sku = "standard"
   }
 }
 
-provider "azurerm" {
-  features {}
-  use_oidc = true
+# NOTE: the Name used for Redis needs to be globally unique
+resource "azurerm_redis_cache" "redis_gh_demo" {
+  name                = "gh-demo"
+  location            = azurerm_resource_group.rg_cc_gh_demo.location
+  resource_group_name = azurerm_resource_group.rg_cc_gh_demo.name
+  capacity            = 2
+  family              = "C"
+  sku_name            = "Standard"
+  enable_non_ssl_port = false
+  minimum_tls_version = "1.2"
+
+  redis_configuration {
+  }
 }
 
-locals {
-  resource_group_name = "rg-cc-gh-demo"
-  location            = "canadacentral"
+# Create an ACR
+resource "azurerm_container_registry" "acr_gh_demo" {
+  name                = "acraksghdemo"
+  resource_group_name = azurerm_resource_group.rg_cc_gh_demo.name
+  location            = azurerm_resource_group.rg_cc_gh_demo.location
+  sku                 = "Premium"
 }
 
-resource "azurerm_resource_group" "rg-cc-gh-demo" {
-  name     = local.resource_group_name
-  location = local.location
+#Attach it to the cluster
+resource "azurerm_role_assignment" "acr_aks_role_assignment_gh_demo" {
+  principal_id                     = azurerm_kubernetes_cluster.aks_gh_demo.kubelet_identity[0].object_id
+  role_definition_name             = "AcrPull"
+  scope                            = azurerm_container_registry.acr_gh_demo.id
+  skip_service_principal_aad_check = true
 }
-# Redis Cache + AKS for ths deployment
-#resource "azurerm_redis_cache" "demo-redis-cache" {
-#  name                = "redis-demo-01"
-#  resource_group_name = azurerm_resource_group.demo-rg.name
-#  location            = local.location
-#  dns_name            = "redis-demo-01"
-#  redis_version       = "6.2"
-#  capacity            = 1
-#  family              = "C"
-#  sku_name            = "Basic"
-#  enable_non_ssl_port = false
-#  minimum_tls_version = "1.2"
-#}

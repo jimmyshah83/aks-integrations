@@ -15,9 +15,7 @@ spring:
       on-profile: cloud
   data:
     redis:
-      host: redis-aks-backend-001.redis.cache.windows.net
       port: 6380
-      password: 
       ssl: true
       abort-on-connect-fail: false
 #      cluster:

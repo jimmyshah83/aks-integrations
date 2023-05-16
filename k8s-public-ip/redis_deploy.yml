@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spring-data-reactive-redis
+  labels:
+    app: redis
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: redis
+  template:
+    metadata:
+      labels:
+        app: redis
+    spec:
+      containers:
+        - name: spring-data-reactive-redis
+          image: aksintegrations01.azurecr.io/spring-data-reactive-redis:0.0.3-SNAPSHOT
+          env:
+#            - name: SPRING_PROFILES_ACTIVE
+#              value: cloud
+            - name: SPRING_DATA_REDIS_HOST
+              value: gh-demo.redis.cache.windows.net
+            - name: SPRING_DATA_REDIS_PASSWORD
+#              value: ${{ secrets.REDIS_PASSWORD }}
+              value: rSagTqzinTrBkJDlFfS7ASCmoNky4cXZCAzCaES5KP8=
+          ports:
+            - containerPort: 8761

@@ -1,0 +1,39 @@
+name: Deploy Application to AKS
+
+on:
+  push:
+    branches: [ main ]
+
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  AZURE_RESOURCE_GROUP: rg-cc-redis-demo-01
+  SPRING_PROFILES_ACTIVE_DEPLOY: cloud
+  ARM_CLIENT_ID: "${{ secrets.AZURE_CLIENT_ID }}"
+  ARM_SUBSCRIPTION_ID: "${{ secrets.AZURE_SUBSCRIPTION_ID }}"
+  ARM_TENANT_ID: "${{ secrets.AZURE_TENANT_ID }}"
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Az CLI login'
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+#      - name: 'Push to Azure Container Registry'
+#        run: |
+#          docker build -t ${{ env.APP_NAME }} .
+#          az acr login --name ${{ env.AZURE_CONTAINER_REGISTRY_NAME }}
+#          docker tag ${{ env.APP_NAME }}:latest ${{ env.AZURE_CONTAINER_REGISTRY_NAME }}.azurecr.io/${{ env.APP_NAME }}:latest
+#          docker push ${{ env.AZURE_CONTAINER_REGISTRY_NAME }}.azurecr.io/${{ env.APP_NAME }}:latest
+#          registry_images=$(az acr repository list --name ${{ env.AZURE_CONTAINER_REGISTRY_NAME }} --output table)
+#          echo "Registry image list = $registry_images"
+#      - name: 'Deploy to Azure Kubernetes Cluster'
+#        run: |
+#          az aks get-credentials --resource-group ${{ env.AZURE_RESOURCE_GROUP }} --name ${{ env.AZURE_KUBERNETES_CLUSTER_NAME }}
+#          kubectl apply -f k8s-config.yml
