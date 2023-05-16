@@ -18,12 +18,11 @@ spec:
         - name: spring-data-reactive-redis
           image: aksintegrations01.azurecr.io/spring-data-reactive-redis:0.0.3-SNAPSHOT
           env:
-#            - name: SPRING_PROFILES_ACTIVE
-#              value: cloud
+            - name: SPRING_PROFILES_ACTIVE
+              value: cloud
             - name: SPRING_DATA_REDIS_HOST
               value: gh-demo.redis.cache.windows.net
             - name: SPRING_DATA_REDIS_PASSWORD
-#              value: ${{ secrets.REDIS_PASSWORD }}
-              value: rSagTqzinTrBkJDlFfS7ASCmoNky4cXZCAzCaES5KP8=
+              value: ${{ secrets.REDIS_PASSWORD }}
           ports:
             - containerPort: 8761

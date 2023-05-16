@@ -4,5 +4,7 @@
 /spring-reactive-cosmos/build/
 /spring-data-reactive-redis/.gradle/
 /spring-data-reactive-redis/build/
-/.terraform/
-/.terraform.lock.hcl
+/terraform/.terraform/
+/terraform/.terraform.lock.hcl
+/terraform/.tfplan.binary
+/terraform/.tfplan.json

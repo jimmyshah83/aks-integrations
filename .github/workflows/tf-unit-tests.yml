@@ -8,6 +8,8 @@ jobs:
   terraform-unit-tests:
     name: 'Terraform Unit Tests'
     runs-on: ubuntu-latest
+    env:
+      working-directory: ./terraform
     permissions:
       security-events: write
 
