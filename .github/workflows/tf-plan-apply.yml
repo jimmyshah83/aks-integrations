@@ -41,10 +41,6 @@ jobs:
         with:
           terraform_wrapper: false
 
-      - name: Change directory to Terraform code
-        run: |
-          cd terraform
-
       # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
       - name: Terraform Init
         run: terraform init
@@ -134,10 +130,6 @@ jobs:
       # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
-
-      - name: Change directory to Terraform code
-        run: |
-          cd terraform
 
       # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
       - name: Terraform Init
