@@ -20,8 +20,9 @@ spec:
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: cloud
+              # EDIT BELOW
             - name: SPRING_DATA_REDIS_HOST
-              value: gh-demo.redis.cache.windows.net
+              value: ${{ secrets.REDIS_HOST }}
             - name: SPRING_DATA_REDIS_PASSWORD
               value: ${{ secrets.REDIS_PASSWORD }}
           ports:
