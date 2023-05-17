@@ -2,7 +2,7 @@ name: Deploy Application to AKS
 
 on:
   push:
-    branches: [ main ]
+    branches: [ test ]
 
 permissions:
   id-token: write

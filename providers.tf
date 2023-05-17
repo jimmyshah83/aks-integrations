@@ -13,7 +13,7 @@ terraform {
   # Needs to be pre-configured in Azure either manually or via another Terraform script
   backend "azurerm" {
     resource_group_name  = "rg-tf-github-actions-state"
-    storage_account_name = "tfgithubactions"
+    storage_account_name = "tfgithubactions01"
     container_name       = "tfstate"
     key                  = "terraform.tfstate"
     use_oidc             = true
