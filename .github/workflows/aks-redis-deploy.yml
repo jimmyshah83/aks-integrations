@@ -39,12 +39,12 @@ jobs:
           username: ${{ secrets.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_PASSWORD }}
 
-      - name: Build the frontend image and push it to ACR
-        uses: docker/build-push-action@v1
+      - name: Build and push it to ACR
+        uses: docker/build-push-action@v2
         with:
           push: true
           tags: ${{ env.AZURE_CONTAINER_REGISTRY_NAME }}.azurecr.io/${{env.APP_NAME}}:${{ github.sha }}
-          file: docker/Dockerfile_redis
+          file: spring-data-reactive-redis/Dockerfile
 
       - name: Az CLI login
         uses: azure/login@v1
