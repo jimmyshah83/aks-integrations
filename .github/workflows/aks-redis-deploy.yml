@@ -45,7 +45,6 @@ jobs:
           push: true
           tags: ${{ env.AZURE_CONTAINER_REGISTRY_NAME }}.azurecr.io/${{env.APP_NAME}}:${{ github.sha }}
           file: docker/Dockerfile_redis
-          version: v0.7.0
 
       - name: Az CLI login
         uses: azure/login@v1
