@@ -7,11 +7,13 @@ on:
 permissions:
   id-token: write
   contents: read
+  actions: read
 
 env:
   AZURE_RESOURCE_GROUP: rg-definite-kitten
   AZURE_CONTAINER_REGISTRY_NAME: acraksghdemo
   APP_NAME: redis
+  AKS_CLUSTER_NAME: aks-gh-demo
 
 jobs:
   build-and-deploy:
@@ -39,13 +41,6 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-#      - name: Docker Login
-#        uses: azure/docker-login@v1
-#        with:
-#          login-server: ${{ env.AZURE_CONTAINER_REGISTRY_NAME }}
-#          username: ${{ secrets.REGISTRY_USERNAME }}
-#          password: ${{ secrets.REGISTRY_PASSWORD }}
-
       - name: Push to Azure Container Registry
         run: |
           docker build -t ${{ env.APP_NAME }} . -f spring-data-reactive-redis/Dockerfile
@@ -55,14 +50,23 @@ jobs:
           registry_images=$(az acr repository list --name ${{ env.AZURE_CONTAINER_REGISTRY_NAME }} --output table)
           echo "Registry image list = $registry_images"
 
-#      - name: Build and push it to ACR
-#        uses: docker/build-push-action@v2
-#        with:
-#          push: true
-#          tags: ${{ env.AZURE_CONTAINER_REGISTRY_NAME }}.azurecr.io/${{env.APP_NAME}}:${{ github.sha }}
-#          file: spring-data-reactive-redis/Dockerfile
+      - name: Set AKS context
+        id: set-context
+        uses: azure/aks-set-context@v3
+        with:
+          resource-group: ${{ env.AZURE_RESOURCE_GROUP }}
+          cluster-name: ${{ env.AKS_CLUSTER_NAME }}
 
-#      - name: 'Deploy to Azure Kubernetes Cluster'
-#        run: |
-#          az aks get-credentials --resource-group ${{ env.AZURE_RESOURCE_GROUP }} --name ${{ env.AZURE_KUBERNETES_CLUSTER_NAME }}
-#          kubectl apply -f k8s-config.yml
+      - name: Setup kubectl
+        id: install-kubectl
+        uses: azure/setup-kubectl@v3
+
+      - name: Deploy to AKS
+        id: deploy-aks
+        uses: Azure/k8s-deploy@v4
+        with:
+          namespace: default
+          manifests: |
+            k8s-public-ip/redis.yml
+          images: ${{ env.AZURE_CONTAINER_REGISTRY_NAME }}.azurecr.io/${{ env.APP_NAME }}:${{ github.sha }}'
+          pull-images: false
