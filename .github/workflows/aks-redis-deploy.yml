@@ -19,20 +19,20 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v3
-
-      - name: Set up JDK 19
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'temurin'
-          java-version: '17'
-
-      - name: Set up Gradle
-        uses: gradle/gradle-build-action@v2
-
-      - name: Run build with Gradle Wrapper
-        run: ./gradlew build
+#      - name: Checkout repo
+#        uses: actions/checkout@v3
+#
+#      - name: Set up JDK 19
+#        uses: actions/setup-java@v3
+#        with:
+#          distribution: 'temurin'
+#          java-version: '17'
+#
+#      - name: Set up Gradle
+#        uses: gradle/gradle-build-action@v2
+#
+#      - name: Run build with Gradle Wrapper
+#        run: ./gradlew build
 
       - name: Az login
         uses: azure/login@v1
@@ -41,14 +41,14 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-      - name: Push to Azure Container Registry
-        run: |
-          docker build -t ${{ env.APP_NAME }} . -f spring-data-reactive-redis/Dockerfile
-          az acr login --name ${{ env.AZURE_CONTAINER_REGISTRY_NAME }}
-          docker tag ${{ env.APP_NAME }}:latest ${{ env.AZURE_CONTAINER_REGISTRY_NAME }}.azurecr.io/${{ env.APP_NAME }}:${{ github.sha }}
-          docker push ${{ env.AZURE_CONTAINER_REGISTRY_NAME }}.azurecr.io/${{ env.APP_NAME }}:${{ github.sha }}
-          registry_images=$(az acr repository list --name ${{ env.AZURE_CONTAINER_REGISTRY_NAME }} --output table)
-          echo "Registry image list = $registry_images"
+#      - name: Push to Azure Container Registry
+#        run: |
+#          docker build -t ${{ env.APP_NAME }} . -f spring-data-reactive-redis/Dockerfile
+#          az acr login --name ${{ env.AZURE_CONTAINER_REGISTRY_NAME }}
+#          docker tag ${{ env.APP_NAME }}:latest ${{ env.AZURE_CONTAINER_REGISTRY_NAME }}.azurecr.io/${{ env.APP_NAME }}:${{ github.sha }}
+#          docker push ${{ env.AZURE_CONTAINER_REGISTRY_NAME }}.azurecr.io/${{ env.APP_NAME }}:${{ github.sha }}
+#          registry_images=$(az acr repository list --name ${{ env.AZURE_CONTAINER_REGISTRY_NAME }} --output table)
+#          echo "Registry image list = $registry_images"
 
       - name: Set AKS context
         id: set-context
@@ -57,19 +57,14 @@ jobs:
           resource-group: ${{ env.AZURE_RESOURCE_GROUP }}
           cluster-name: ${{ env.AKS_CLUSTER_NAME }}
 
-      - name: Set Generic Redis Secret
-        uses: azure/k8s-create-secret@v2
-        with:
-          namespace: default
-          secret-type: generic
-          secret-name: redis-secret
-          string-data: |
-            ${{ secrets.REDIS_HOST }}
-            ${{ secrets.REDIS_PASSWORD }}
-
       - name: Setup kubectl
         id: install-kubectl
         uses: azure/setup-kubectl@v3
+
+      - name: Set Generic Redis Secret
+        shell: bash
+        run: |
+          kubectl create secret generic redis-secret --from-literal=HOST=${{ secrets.REDIS_HOST }} --from-literal=PASSWORD=${{ secrets.REDIS_PASSWORD }}
 
       - name: Deploy to AKS
         id: deploy-aks
