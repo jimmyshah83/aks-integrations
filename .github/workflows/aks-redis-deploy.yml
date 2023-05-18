@@ -32,16 +32,24 @@ jobs:
       - name: Run build with Gradle Wrapper
         run: ./gradlew build
 
-      - name: Docker Login
-        uses: azure/docker-login@v1
+      - name: Az CLI login
+        uses: azure/login@v1
         with:
-          login-server: ${{ env.AZURE_CONTAINER_REGISTRY_NAME }}
-          username: ${{ secrets.REGISTRY_USERNAME }}
-          password: ${{ secrets.REGISTRY_PASSWORD }}
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+#      - name: Docker Login
+#        uses: azure/docker-login@v1
+#        with:
+#          login-server: ${{ env.AZURE_CONTAINER_REGISTRY_NAME }}
+#          username: ${{ secrets.REGISTRY_USERNAME }}
+#          password: ${{ secrets.REGISTRY_PASSWORD }}
 
       - name: Push to Azure Container Registry
         run: |
           docker build -t ${{ env.APP_NAME }} . -f spring-data-reactive-redis/Dockerfile
+          az acr login --name ${{ env.AZURE_CONTAINER_REGISTRY_NAME }}
           docker tag ${{ env.APP_NAME }}:latest ${{ env.AZURE_CONTAINER_REGISTRY_NAME }}.azurecr.io/${{ env.APP_NAME }}:${{ github.sha }}
           docker push ${{ env.AZURE_CONTAINER_REGISTRY_NAME }}.azurecr.io/${{ env.APP_NAME }}:${{ github.sha }}
           registry_images=$(az acr repository list --name ${{ env.AZURE_CONTAINER_REGISTRY_NAME }} --output table)
@@ -53,13 +61,6 @@ jobs:
 #          push: true
 #          tags: ${{ env.AZURE_CONTAINER_REGISTRY_NAME }}.azurecr.io/${{env.APP_NAME}}:${{ github.sha }}
 #          file: spring-data-reactive-redis/Dockerfile
-
-      - name: Az CLI login
-        uses: azure/login@v1
-        with:
-          client-id: ${{ secrets.AZURE_CLIENT_ID }}
-          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
 #      - name: 'Deploy to Azure Kubernetes Cluster'
 #        run: |
