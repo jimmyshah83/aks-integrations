@@ -39,12 +39,20 @@ jobs:
           username: ${{ secrets.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_PASSWORD }}
 
-      - name: Build and push it to ACR
-        uses: docker/build-push-action@v2
-        with:
-          push: true
-          tags: ${{ env.AZURE_CONTAINER_REGISTRY_NAME }}.azurecr.io/${{env.APP_NAME}}:${{ github.sha }}
-          file: spring-data-reactive-redis/Dockerfile
+      - name: Push to Azure Container Registry
+        run: |
+          docker build -t ${{ env.APP_NAME }} . -f spring-data-reactive-redis/Dockerfile
+          docker tag ${{ env.APP_NAME }}:latest ${{ env.AZURE_CONTAINER_REGISTRY_NAME }}.azurecr.io/${{ env.APP_NAME }}:${{ github.sha }}
+          docker push ${{ env.AZURE_CONTAINER_REGISTRY_NAME }}.azurecr.io/${{ env.APP_NAME }}:${{ github.sha }}
+          registry_images=$(az acr repository list --name ${{ env.AZURE_CONTAINER_REGISTRY_NAME }} --output table)
+          echo "Registry image list = $registry_images"
+
+#      - name: Build and push it to ACR
+#        uses: docker/build-push-action@v2
+#        with:
+#          push: true
+#          tags: ${{ env.AZURE_CONTAINER_REGISTRY_NAME }}.azurecr.io/${{env.APP_NAME}}:${{ github.sha }}
+#          file: spring-data-reactive-redis/Dockerfile
 
       - name: Az CLI login
         uses: azure/login@v1
@@ -52,15 +60,6 @@ jobs:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-
-#      - name: Push to Azure Container Registry
-#        run: |
-#          docker build -t ${{ env.APP_NAME }} . -f docker/Dockerfile_redis
-#          az acr login --name ${{ env.AZURE_CONTAINER_REGISTRY_NAME }}
-#          docker tag ${{ env.APP_NAME }}:latest ${{ env.AZURE_CONTAINER_REGISTRY_NAME }}.azurecr.io/${{ env.APP_NAME }}:${{ github.sha }}
-#          docker push ${{ env.AZURE_CONTAINER_REGISTRY_NAME }}.azurecr.io/${{ env.APP_NAME }}:${{ github.sha }}
-#          registry_images=$(az acr repository list --name ${{ env.AZURE_CONTAINER_REGISTRY_NAME }} --output table)
-#          echo "Registry image list = $registry_images"
 
 #      - name: 'Deploy to Azure Kubernetes Cluster'
 #        run: |
