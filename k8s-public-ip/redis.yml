@@ -21,9 +21,15 @@ spec:
             - name: SPRING_PROFILES_ACTIVE
               value: cloud
             - name: SPRING_DATA_REDIS_HOST
-              value: gh-demo.redis.cache.windows.net
+              valueFrom:
+                secretKeyRef:
+                  name: redis-secret
+                  key: HOST
             - name: SPRING_DATA_REDIS_PASSWORD
-              value: 1FbqqWzvBfcSDfarIbrBHFswlSwcPg49jAzCaDWEP1w=
+              valueFrom:
+                secretKeyRef:
+                  name: redis-secret
+                  key: PASSWORD
           ports:
             - containerPort: 8761
 ---

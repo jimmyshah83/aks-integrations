@@ -4,12 +4,14 @@ This project is a sample application that shows how to use Spring Data Redis to 
 
 ### Prerequisites
 
-* JDK 8 or later
-* Gradle 4+ or Maven 3.2+
+* JDK 17 or later
+* Gradle 6+ or later
 * Redis 6.0.0 or later
 * Docker
 
-### Running the application
+### KeyVault
+1. App needs to have the correct access policy to access the KeyVault  
+   https://learn.microsoft.com/en-us/azure/key-vault/general/assign-access-policy?tabs=azure-portal
 
 ### Terraform
 
@@ -58,3 +60,6 @@ This project is a sample application that shows how to use Spring Data Redis to 
 
 - Resource Group
 - Redis Cache
+- ACR
+- AKS
+- Provide AKS access to pull images from ACR

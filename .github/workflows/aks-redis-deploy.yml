@@ -57,6 +57,17 @@ jobs:
           resource-group: ${{ env.AZURE_RESOURCE_GROUP }}
           cluster-name: ${{ env.AKS_CLUSTER_NAME }}
 
+      - name: Set Generic Redis Secret
+        uses: azure/k8s-create-secret@v1
+        id: redis-secret
+        with:
+          namespace: default
+          secret-type: generic
+          secret-name: redis-secret
+          data: |
+            ${{ secrets.REDIS_HOST }}
+            ${{ secrets.REDIS_PASSWORD }}
+
       - name: Setup kubectl
         id: install-kubectl
         uses: azure/setup-kubectl@v3
