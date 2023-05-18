@@ -13,7 +13,7 @@ env:
   AZURE_RESOURCE_GROUP: rg-definite-kitten
   AZURE_CONTAINER_REGISTRY_NAME: acraksghdemo
   APP_NAME: redis
-  AKS_CLUSTER_NAME: aks-gh-demo
+  AKS_CLUSTER_NAME: aksghdemo
 
 jobs:
   build-and-deploy:
@@ -34,7 +34,7 @@ jobs:
       - name: Run build with Gradle Wrapper
         run: ./gradlew build
 
-      - name: Az CLI login
+      - name: Az login
         uses: azure/login@v1
         with:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
