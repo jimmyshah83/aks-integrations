@@ -21,9 +21,9 @@ spec:
             - name: SPRING_PROFILES_ACTIVE
               value: cloud
             - name: SPRING_DATA_REDIS_HOST
-              value: ${{ secrets.REDIS_HOST }}
+              value: gh-demo.redis.cache.windows.net
             - name: SPRING_DATA_REDIS_PASSWORD
-              value: ${{ secrets.REDIS_PASSWORD }}
+              value: 1FbqqWzvBfcSDfarIbrBHFswlSwcPg49jAzCaDWEP1w=
           ports:
             - containerPort: 8761
 ---
