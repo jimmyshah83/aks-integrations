@@ -58,13 +58,12 @@ jobs:
           cluster-name: ${{ env.AKS_CLUSTER_NAME }}
 
       - name: Set Generic Redis Secret
-        uses: azure/k8s-create-secret@v1
-        id: redis-secret
+        uses: azure/k8s-create-secret@v2
         with:
           namespace: default
           secret-type: generic
           secret-name: redis-secret
-          data: |
+          string-data: |
             ${{ secrets.REDIS_HOST }}
             ${{ secrets.REDIS_PASSWORD }}
 
