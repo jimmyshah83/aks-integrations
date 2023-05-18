@@ -64,6 +64,7 @@ jobs:
       - name: Set Generic Redis Secret
         shell: bash
         run: |
+          kubectl delete secret/redis-secret
           kubectl create secret generic redis-secret --from-literal=HOST=${{ secrets.REDIS_HOST }} --from-literal=PASSWORD=${{ secrets.REDIS_PASSWORD }}
 
       - name: Deploy to AKS
