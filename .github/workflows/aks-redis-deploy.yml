@@ -61,18 +61,20 @@ jobs:
         id: install-kubectl
         uses: azure/setup-kubectl@v3
 
-      - name: Set Generic Redis Secret
-        shell: bash
-        run: |
-          kubectl delete secret/redis-secret
-          kubectl create secret generic redis-secret --from-literal=HOST=${{ secrets.REDIS_HOST }} --from-literal=PASSWORD=${{ secrets.REDIS_PASSWORD }}
-
-      - name: Deploy to AKS
-        id: deploy-aks
-        uses: Azure/k8s-deploy@v4
+      - name: Create redis secret
+        uses: azure/k8s-create-secret@v2
         with:
           namespace: default
-          manifests: |
-            k8s-public-ip/redis.yml
-          images: ${{ env.AZURE_CONTAINER_REGISTRY_NAME }}.azurecr.io/${{ env.APP_NAME }}:${{ github.sha }}
-          pull-images: false
+          secret-type: generic
+          secret-name: redis-secret
+          string-data: ${{secrets.REDIS_CONNECTION_STRING}}
+
+#      - name: Deploy to AKS
+#        id: deploy-aks
+#        uses: Azure/k8s-deploy@v4
+#        with:
+#          namespace: default
+#          manifests: |
+#            k8s-public-ip/redis.yml
+#          images: ${{ env.AZURE_CONTAINER_REGISTRY_NAME }}.azurecr.io/${{ env.APP_NAME }}:${{ github.sha }}
+#          pull-images: false
