@@ -56,7 +56,7 @@ resource "azurerm_container_registry" "acr_gh_demo" {
   sku                 = "Premium"
 }
 
-Attach it to the cluster
+#Attach it to the cluster
 resource "azurerm_role_assignment" "acr_aks_role_assignment_gh_demo" {
   principal_id                     = azurerm_kubernetes_cluster.aks_gh_demo.kubelet_identity[0].object_id
   role_definition_name             = "AcrPull"
