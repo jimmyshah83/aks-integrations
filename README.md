@@ -1,4 +1,4 @@
-# msft-learnings
+# Azure Integrations with AKS
 
 ### AKS with Azure CNI Overlay
 

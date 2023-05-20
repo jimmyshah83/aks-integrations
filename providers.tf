@@ -4,10 +4,6 @@ terraform {
       source  = "hashicorp/azurerm"
       version = ">= 3.7.0"
     }
-    random = {
-      source  = "hashicorp/random"
-      version = "~>3.0"
-    }
   }
 
   # Needs to be pre-configured in Azure either manually or via another Terraform script

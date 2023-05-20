@@ -1,7 +1,6 @@
 name: 'Terraform Plan/Apply'
 
 on:
-# Enable for the purpose of the demo
 #  push:
 #    branches:
 #      - main

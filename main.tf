@@ -8,10 +8,6 @@ resource "azurerm_resource_group" "rg_cc_gh_demo" {
   name     = random_pet.rg_name.id
 }
 
-resource "random_id" "log_analytics_workspace_name_suffix" {
-  byte_length = 8
-}
-
 resource "azurerm_kubernetes_cluster" "aks_gh_demo" {
   location            = azurerm_resource_group.rg_cc_gh_demo.location
   name                = var.cluster_name

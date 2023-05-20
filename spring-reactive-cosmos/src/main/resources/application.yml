@@ -7,7 +7,7 @@ spring:
       cosmos:
         database: coffee
         endpoint: https://nosql-aks-backend-001.documents.azure.com:443/
-        key:
+        key: xxxxxxxxxxx
         populate-query-metrics: false
 
 redis:
@@ -24,7 +24,7 @@ spring:
       cosmos:
         database: coffee
         endpoint: https://nosql-aks-backend-001.documents.azure.com:443/
-        key:
+        key: 6ffWa89IwUQm50nk86wucpdW40JtjE42qdDZZhrKseAJYjrsOtIBPhxUIe1nLGN0C5jHBmSdELU5ACDbzqDQWw==
         populate-query-metrics: true
 redis:
 #  host: http://redis-svc.aks-demo.svc.cluster.local:8761
