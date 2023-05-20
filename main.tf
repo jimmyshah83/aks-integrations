@@ -63,3 +63,9 @@ resource "azurerm_role_assignment" "acr_aks_role_assignment_gh_demo" {
   scope                            = azurerm_container_registry.acr_gh_demo.id
   skip_service_principal_aad_check = true
 }
+
+# Drift DEMO Delete
+resource "azurerm_resource_group" "rg_cc_gh_demo_drift" {
+  location = var.location
+  name     = "rg_cc_gh_demo_drift"
+}
