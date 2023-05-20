@@ -69,12 +69,12 @@ jobs:
           secret-name: redis-secret
           string-data: ${{secrets.REDIS_CONNECTION_STRING}}
 
-#      - name: Deploy to AKS
-#        id: deploy-aks
-#        uses: Azure/k8s-deploy@v4
-#        with:
-#          namespace: default
-#          manifests: |
-#            k8s-public-ip/redis.yml
-#          images: ${{ env.AZURE_CONTAINER_REGISTRY_NAME }}.azurecr.io/${{ env.APP_NAME }}:${{ github.sha }}
-#          pull-images: false
+      - name: Deploy to AKS
+        id: deploy-aks
+        uses: Azure/k8s-deploy@v4
+        with:
+          namespace: default
+          manifests: |
+            k8s-public-ip/redis.yml
+          images: ${{ env.AZURE_CONTAINER_REGISTRY_NAME }}.azurecr.io/${{ env.APP_NAME }}:${{ github.sha }}
+          pull-images: false
