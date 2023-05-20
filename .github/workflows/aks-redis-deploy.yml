@@ -10,7 +10,7 @@ permissions:
   actions: read
 
 env:
-  AZURE_RESOURCE_GROUP: rg-definite-kitten
+  AZURE_RESOURCE_GROUP: rg-sweet-seasnail
   AZURE_CONTAINER_REGISTRY_NAME: acraksghdemo
   APP_NAME: redis
   AKS_CLUSTER_NAME: aksghdemo
