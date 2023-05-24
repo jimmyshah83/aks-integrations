@@ -1,5 +1,7 @@
 # Azure Integrations with AKS
 
+![img_1.png](img_1.png)
+
 ### AKS with Azure CNI Overlay
 
 - Create AKS Cluster
