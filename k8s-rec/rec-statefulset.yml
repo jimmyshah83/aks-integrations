@@ -1,0 +1,225 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  annotations:
+    redis.io/current-bootstrapper-version-tag: 6.4.2-5
+    redis.io/current-redis-version-tag: 6.4.2-61
+  creationTimestamp: "2023-06-11T21:58:44Z"
+  generation: 1
+  labels:
+    app: redis-enterprise
+    redis.io/cluster: my-rec
+  name: my-rec
+  namespace: re-cluster
+  ownerReferences:
+  - apiVersion: app.redislabs.com/v1alpha1
+    blockOwnerDeletion: true
+    controller: true
+    kind: RedisEnterpriseCluster
+    name: my-rec
+    uid: 96bd0393-cfc3-4111-b2d2-80a3e232eef8
+  resourceVersion: "31919"
+  uid: 6227c43f-5ba7-4c0b-9c01-6e7bd3ae4ea8
+spec:
+  podManagementPolicy: OrderedReady
+  replicas: 3
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: redis-enterprise
+      redis.io/cluster: my-rec
+      redis.io/role: node
+  serviceName: my-rec
+  template:
+    metadata:
+      annotations:
+        redis.io/current-bootstrapper-version-tag: 6.4.2-5
+        redis.io/current-redis-version-tag: 6.4.2-61
+      creationTimestamp: null
+      labels:
+        app: redis-enterprise
+        redis.io/cluster: my-rec
+        redis.io/role: node
+    spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchLabels:
+                app: redis-enterprise
+                redis.io/cluster: my-rec
+                redis.io/role: node
+            topologyKey: kubernetes.io/hostname
+      containers:
+      - env:
+        - name: CREDENTIAL_TYPE
+          value: kubernetes
+        image: redislabs/redis:6.4.2-61
+        imagePullPolicy: IfNotPresent
+        lifecycle:
+          preStop:
+            exec:
+              command:
+              - bash
+              - -c
+              - /opt/redislabs/bin/python /opt/redislabs/mount/prestop.py
+        name: redis-enterprise-node
+        ports:
+        - containerPort: 8001
+          protocol: TCP
+        - containerPort: 8443
+          protocol: TCP
+        - containerPort: 9443
+          protocol: TCP
+        readinessProbe:
+          exec:
+            command:
+            - bash
+            - -c
+            - /opt/redislabs/bin/python /opt/redislabs/mount/health_check.py
+          failureThreshold: 3
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 30
+        resources:
+          limits:
+            cpu: "2"
+            memory: 4Gi
+          requests:
+            cpu: "2"
+            memory: 4Gi
+        securityContext:
+          capabilities:
+            add:
+            - SYS_RESOURCE
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /opt/redislabs/mount
+          name: health-check-volume
+          readOnly: true
+        - mountPath: /opt/redislabs/shared
+          name: shared-volume
+          readOnly: true
+        - mountPath: /opt/persistent
+          name: redis-enterprise-storage
+        - mountPath: /var/opt/redislabs/log
+          name: redis-enterprise-storage
+          subPath: logs
+        - mountPath: /opt/redislabs/credentials
+          name: credentials
+      - command:
+        - /usr/local/bin/bootstrapper
+        env:
+        - name: NAMESPACE
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.namespace
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.name
+        - name: REC_NAME
+          value: my-rec
+        - name: IS_ROF_ENABLED
+          value: "false"
+        - name: IS_INTERNAL_IPV6_MODE
+          value: "false"
+        - name: PERSISTENCE_PATH
+          value: /opt/persistent
+        - name: CREDENTIAL_TYPE
+          value: kubernetes
+        image: redislabs/operator:6.4.2-5
+        imagePullPolicy: IfNotPresent
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /livez
+            port: 8787
+            scheme: HTTP
+          initialDelaySeconds: 300
+          periodSeconds: 15
+          successThreshold: 1
+          timeoutSeconds: 15
+        name: bootstrapper
+        ports:
+        - containerPort: 8787
+          protocol: TCP
+        resources:
+          limits:
+            cpu: 100m
+            memory: 128Mi
+          requests:
+            cpu: 100m
+            memory: 128Mi
+        securityContext:
+          capabilities:
+            add:
+            - SYS_RESOURCE
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /etc/opt/redislabs/mount/bulletin-board
+          name: bulletin-board-volume
+        - mountPath: /opt/redislabs/shared
+          name: shared-volume
+        - mountPath: /opt/redislabs/credentials
+          name: credentials
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext:
+        fsGroup: 1001
+        runAsUser: 1001
+      serviceAccount: my-rec
+      serviceAccountName: my-rec
+      terminationGracePeriodSeconds: 31536000
+      volumes:
+      - configMap:
+          defaultMode: 420
+          name: my-rec-bulletin-board
+        name: bulletin-board-volume
+      - configMap:
+          defaultMode: 420
+          name: my-rec-health-check
+        name: health-check-volume
+      - emptyDir:
+          sizeLimit: "0"
+        name: shared-volume
+      - name: credentials
+        secret:
+          defaultMode: 420
+          secretName: my-rec
+  updateStrategy:
+    type: RollingUpdate
+  volumeClaimTemplates:
+  - apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: redis-enterprise
+        redis.io/cluster: my-rec
+      name: redis-enterprise-storage
+      namespace: re-cluster
+    spec:
+      accessModes:
+      - ReadWriteOnce
+      resources:
+        requests:
+          storage: 20Gi
+      volumeMode: Filesystem
+    status:
+      phase: Pending
+status:
+  availableReplicas: 3
+  collisionCount: 0
+  currentReplicas: 3
+  currentRevision: my-rec-649c5b877d
+  observedGeneration: 1
+  readyReplicas: 3
+  replicas: 3
+  updateRevision: my-rec-649c5b877d
+  updatedReplicas: 3

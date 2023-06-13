@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/spring-data-reactive-redis/azure-integrations.spring-data-reactive-redis.main.iml" filepath="$PROJECT_DIR$/.idea/modules/spring-data-reactive-redis/azure-integrations.spring-data-reactive-redis.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/spring-reactive-cosmos/azure-integrations.spring-reactive-cosmos.main.iml" filepath="$PROJECT_DIR$/.idea/modules/spring-reactive-cosmos/azure-integrations.spring-reactive-cosmos.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../azure-kb/azure-kb.iml" filepath="$PROJECT_DIR$/../azure-kb/azure-kb.iml" />
+    </modules>
+  </component>
+</project>
