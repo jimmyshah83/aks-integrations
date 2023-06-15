@@ -4,6 +4,11 @@ server:
 spring:
   cloud:
     azure:
+#      keyvault:
+#        secret:
+#          property-sources[0]:
+#            endpoint: https://js-kv-01.vault.azure.net/
+#      The below should be set as part of environment variables
       credential:
         client-id: d29bd655-ab91-4014-8b81-265d760c9dc2
         client-secret: gvA8Q~3aODfk5jhLGFTqPy1FFabtkFFZfqDnzcaQ

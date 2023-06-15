@@ -15,25 +15,25 @@ import java.util.function.Supplier;
 @Slf4j
 public class SpringCloudStreamKafkaApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(SpringCloudStreamKafkaApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(SpringCloudStreamKafkaApplication.class, args);
+    }
 
-	@Bean
-	public Sinks.Many<Message<String>> many() {
-		return Sinks.many().unicast().onBackpressureBuffer();
-	}
+    @Bean
+    public Sinks.Many<Message<String>> many() {
+        return Sinks.many().unicast().onBackpressureBuffer();
+    }
 
-	@Bean
-	public Supplier<Flux<Message<String>>> supply(Sinks.Many<Message<String>> many) {
-		return () -> many.asFlux()
-				.doOnNext(m -> log.info("Manually sending message {}", m))
-				.doOnError(t -> log.error("Error encountered", t));
-	}
+    @Bean
+    public Supplier<Flux<Message<String>>> supply(Sinks.Many<Message<String>> many) {
+        return () -> many.asFlux()
+                .doOnNext(m -> log.info("Manually sending message {}", m))
+                .doOnError(t -> log.error("Error encountered", t));
+    }
 
-	@Bean
-	public Consumer<Message<String>> consume() {
-		return message -> log.info("New message received: '{}'", message.getPayload());
-	}
+    @Bean
+    public Consumer<Message<String>> consume() {
+        return message -> log.info("New message received: '{}'", message.getPayload());
+    }
 
 }
