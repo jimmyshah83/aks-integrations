@@ -8,6 +8,7 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/spring-cloud-stream-kafka" />
             <option value="$PROJECT_DIR$/spring-data-reactive-redis" />
             <option value="$PROJECT_DIR$/spring-reactive-cosmos" />
           </set>

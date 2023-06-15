@@ -1,0 +1,29 @@
+server:
+  port: 8762
+
+spring:
+  cloud:
+    azure:
+      credential:
+        client-id: d29bd655-ab91-4014-8b81-265d760c9dc2
+        client-secret: gvA8Q~3aODfk5jhLGFTqPy1FFabtkFFZfqDnzcaQ
+      profile:
+        tenantId: 16b3c013-d300-468d-ac64-7eda0820b6d3
+    function:
+      definition: consume;supply
+    stream:
+      kafka:
+        binder:
+          brokers: js-cluster-01.servicebus.windows.net:9093
+      bindings:
+        consume-in-0:
+          destination: demo-topic
+          group: $Default
+        supply-out-0:
+          destination: demo-topic
+      binders:
+        kafka:
+          environment:
+            spring:
+              main:
+                sources: com.azure.spring.cloud.autoconfigure.eventhubs.kafka.AzureEventHubsKafkaAutoConfiguration

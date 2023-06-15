@@ -1,3 +1,4 @@
 rootProject.name = 'azure-integrations'
 include 'spring-data-reactive-redis'
 include 'spring-reactive-cosmos'
+include 'spring-cloud-stream-kafka'
