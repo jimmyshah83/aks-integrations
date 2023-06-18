@@ -25,6 +25,7 @@
 	dependencies {
 		implementation 'org.springframework.boot:spring-boot-starter-web'
 		implementation 'com.azure.spring:spring-cloud-azure-starter'
+		implementation 'com.azure.spring:spring-cloud-azure-starter-keyvault'
 		implementation 'org.springframework.cloud:spring-cloud-starter-stream-kafka:4.0.0'
 		compileOnly 'org.projectlombok:lombok'
 		annotationProcessor 'org.projectlombok:lombok'

@@ -1,5 +1,7 @@
 package com.example.kafka;
 
+import com.azure.security.keyvault.secrets.SecretClient;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -13,7 +15,10 @@ import java.util.function.Supplier;
 
 @SpringBootApplication
 @Slf4j
+@RequiredArgsConstructor
 public class SpringCloudStreamKafkaApplication {
+
+    private final SecretClient secretClient;
 
     public static void main(String[] args) {
         SpringApplication.run(SpringCloudStreamKafkaApplication.class, args);
