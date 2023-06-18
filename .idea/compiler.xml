@@ -8,9 +8,9 @@
         <processorPath useClasspath="false">
           <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.24/13a394eed5c4f9efb2a6d956e2086f1d81e857d9/lombok-1.18.24.jar" />
         </processorPath>
-        <module name="azure-integrations.spring-data-reactive-redis.main" />
-        <module name="azure-integrations.spring-cloud-stream-kafka.main" />
-        <module name="azure-integrations.spring-reactive-cosmos.main" />
+        <module name="aks-integrations.spring-data-reactive-redis.main" />
+        <module name="aks-integrations.spring-cloud-stream-kafka.main" />
+        <module name="aks-integrations.spring-reactive-cosmos.main" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="17">
