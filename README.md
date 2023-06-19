@@ -1,4 +1,5 @@
-# Azure Integrations with AKS
+## Azure Integrations with AKS
 
-[Diagram coming soon]
+#### Proposed architecture
 
+![img.png](img.png)

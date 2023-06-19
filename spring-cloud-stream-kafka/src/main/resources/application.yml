@@ -8,10 +8,10 @@ spring:
         secret:
           endpoint: https://js-kv-01.vault.azure.net/
 #      credential:
-#        client-id: d29bd655-ab91-4014-8b81-265d760c9dc2
+#        client-id: ${eh-sp-client-id}
 #        client-secret: ${eh-sp-secret}
 #      profile:
-#        tenantId: 16b3c013-d300-468d-ac64-7eda0820b6d3
+#        tenantId: ${eh-tenant-id}
     function:
       definition: consume;supply
     stream:
