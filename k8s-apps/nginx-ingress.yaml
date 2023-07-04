@@ -1,5 +1,0 @@
-# Use only for private IP address
-controller:
-  service:
-    annotations:
-      service.beta.kubernetes.io/azure-load-balancer-internal: "true"

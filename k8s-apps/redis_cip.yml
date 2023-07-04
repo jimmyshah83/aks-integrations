@@ -2,6 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: redis-svc
+  namespace: spring-services
   labels:
     app: redis
 spec:

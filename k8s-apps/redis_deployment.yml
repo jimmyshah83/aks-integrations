@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: spring-data-reactive-redis
+  namespace: spring-services
   labels:
     app: redis
 spec:

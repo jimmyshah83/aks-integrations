@@ -1,0 +1,19 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: redis-virtual-svc
+  namespace: spring-services
+spec:
+  hosts:
+    - '*'
+  gateways:
+    - redis-gateway
+  http:
+    - match:
+        - uri:
+            prefix: '/'
+      route:
+        - destination:
+            host: redis-svc.spring-services.svc.cluster.local
+            port:
+              number: 8761
