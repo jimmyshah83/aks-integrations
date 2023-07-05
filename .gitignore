@@ -9,3 +9,4 @@
 /.tfplan.binary
 .tfplan.json
 /.idea/
+/istio/certs/

@@ -2,10 +2,10 @@ apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
   name: redis-virtual-svc
-  namespace: spring-services
+  namespace: istio-system
 spec:
   hosts:
-    - '*'
+    - "coffee.jiviteshshah.com"
   gateways:
     - redis-gateway
   http:

@@ -2,7 +2,7 @@ apiVersion: networking.istio.io/v1alpha3
 kind: Gateway
 metadata:
   name: redis-gateway
-  namespace: spring-services
+  namespace: istio-system
 spec:
   # The selector matches the ingress gateway pod labels.
   # If you installed Istio using Helm following the standard documentation, this would be "istio=ingress"
@@ -15,3 +15,12 @@ spec:
         protocol: HTTP
       hosts:
         - '*'
+    - port:
+        number: 443
+        name: https
+        protocol: HTTPS
+      hosts:
+        - 'coffee.jiviteshshah.com'
+      tls:
+        mode: SIMPLE
+        credentialName: gateway-certs
